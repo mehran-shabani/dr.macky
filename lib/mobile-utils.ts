@@ -2,6 +2,16 @@
  * Mobile utility functions for better UX
  */
 
+type ScreenOrientationLock =
+  | 'any'
+  | 'natural'
+  | 'landscape'
+  | 'landscape-primary'
+  | 'landscape-secondary'
+  | 'portrait'
+  | 'portrait-primary'
+  | 'portrait-secondary'
+
 /**
  * Check if device is mobile
  */
@@ -54,13 +64,19 @@ export function hapticFeedback(
  * Lock screen orientation
  */
 export async function lockOrientation(
-  orientation: OrientationLockType
+  orientation: ScreenOrientationLock
 ): Promise<void> {
-  if ('orientation' in screen && 'lock' in screen.orientation) {
-    try {
-      await screen.orientation.lock(orientation)
-    } catch (error) {
-      console.log('Screen orientation lock failed:', error)
+  if ('orientation' in screen) {
+    const orientationApi = screen.orientation as ScreenOrientation & {
+      lock?: (orientation: ScreenOrientationLock) => Promise<void>
+    }
+
+    if (typeof orientationApi.lock === 'function') {
+      try {
+        await orientationApi.lock(orientation)
+      } catch (error) {
+        console.log('Screen orientation lock failed:', error)
+      }
     }
   }
 }

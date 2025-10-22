@@ -9,9 +9,9 @@ import Link from 'next/link'
 export const revalidate = 3600
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     category: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -21,7 +21,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const categoryInfo = getCategoryInfo(params.category)
+  const { category } = await params
+  const categoryInfo = getCategoryInfo(category)
   if (!categoryInfo) return {}
 
   return {
@@ -30,14 +31,15 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   }
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const categoryInfo = getCategoryInfo(params.category)
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { category } = await params
+  const categoryInfo = getCategoryInfo(category)
   if (!categoryInfo) {
     notFound()
   }
 
-  const posts = getPostsByCategory(params.category)
-  const subcategories = getSubcategoriesByCategory(params.category)
+  const posts = getPostsByCategory(category)
+  const subcategories = getSubcategoriesByCategory(category)
 
   return (
     <div className="min-h-screen">

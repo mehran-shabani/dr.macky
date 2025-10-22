@@ -15,9 +15,9 @@ import { Separator } from '@/components/ui/separator'
 export const revalidate = 3600
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -29,13 +29,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
+  const { slug } = await params
+  const post = getPostBySlug(slug)
   if (!post) return {}
   return buildArticleMeta(post)
 }
 
-export default function PostPage({ params }: PostPageProps) {
-  const post = getPostBySlug(params.slug)
+export default async function PostPage({ params }: PostPageProps) {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
   if (!post) {
     notFound()
   }

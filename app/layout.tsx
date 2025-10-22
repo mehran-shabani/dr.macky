@@ -1,26 +1,11 @@
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import type { Metadata, Viewport } from 'next'
+import { Vazirmatn } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
-const iranSansX = localFont({
-  src: [
-    {
-      path: '../public/fonts/IRANSansX-Regular.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/IRANSansX-Medium.woff2',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/IRANSansX-Bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
+const iranSansX = Vazirmatn({
+  subsets: ['latin', 'arabic'],
+  weight: ['400', '500', '700'],
   variable: '--font-iran-sans',
   display: 'swap',
 })
@@ -41,17 +26,6 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-    viewportFit: 'cover',
-  },
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
-  ],
   openGraph: {
     type: 'website',
     locale: 'fa_IR',
@@ -70,6 +44,18 @@ export const metadata: Metadata = {
       { url: '/icons/icon-180x180.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
 }
 
 export default function RootLayout({
