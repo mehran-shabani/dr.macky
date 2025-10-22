@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "predev": "npm run build:search",
     "dev": "next dev",
     "build": "contentlayer2 build && npm run build:search && next build",
     "build:search": "node scripts/build-search-index.mjs",
