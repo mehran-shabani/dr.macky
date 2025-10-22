@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run build:search && contentlayer build && next build",
+    "build": "contentlayer build && npm run build:search && next build",
     "build:search": "node scripts/build-search-index.mjs",
     "start": "next start",
     "lint": "next lint",
