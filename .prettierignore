@@ -1,0 +1,7 @@
+.next
+.contentlayer
+node_modules
+dist
+build
+*.log
+.env*
