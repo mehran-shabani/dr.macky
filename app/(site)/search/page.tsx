@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { MainNav } from '@/components/nav/main-nav'
 import { deserializeSearchIndex } from '@/lib/search'
@@ -13,20 +13,40 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false)
   const [indexLoaded, setIndexLoaded] = useState(false)
   const [searchIndex, setSearchIndex] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchSearchIndex = useCallback(async () => {
+    setError(null)
+    setIndexLoaded(false)
+    setSearchIndex(null)
+
+    try {
+      const res = await fetch('/search-index.json')
+      if (!res.ok) {
+        setError('بارگذاری ایندکس جست‌وجو با مشکل مواجه شد. لطفاً دوباره تلاش کنید.')
+        setIndexLoaded(true)
+        setLoading(false)
+        setResults([])
+        return
+      }
+
+      const data = await res.text()
+      const index = deserializeSearchIndex(data)
+      setSearchIndex(index)
+      setIndexLoaded(true)
+    } catch (err) {
+      console.error('Failed to load search index:', err)
+      setError('بارگذاری ایندکس جست‌وجو با مشکل مواجه شد. لطفاً دوباره تلاش کنید.')
+      setIndexLoaded(true)
+      setLoading(false)
+      setResults([])
+    }
+  }, [])
 
   useEffect(() => {
     // Load search index on mount
-    fetch('/search-index.json')
-      .then((res) => res.text())
-      .then((data) => {
-        const index = deserializeSearchIndex(data)
-        setSearchIndex(index)
-        setIndexLoaded(true)
-      })
-      .catch((err) => {
-        console.error('Failed to load search index:', err)
-      })
-  }, [])
+    fetchSearchIndex()
+  }, [fetchSearchIndex])
 
   useEffect(() => {
     if (!indexLoaded || !searchIndex || query.length < 2) {
@@ -63,11 +83,24 @@ export default function SearchPage() {
           />
         </div>
 
-        {!indexLoaded && (
+        {!indexLoaded && !error && (
           <div className="text-center text-muted-foreground">در حال بارگذاری ایندکس جست‌وجو...</div>
         )}
 
         {loading && <div className="text-center text-muted-foreground">در حال جست‌وجو...</div>}
+
+        {error && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-6 text-center">
+            <p className="text-destructive">{error}</p>
+            <button
+              type="button"
+              onClick={fetchSearchIndex}
+              className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+            >
+              تلاش مجدد
+            </button>
+          </div>
+        )}
 
         {query.length > 0 && query.length < 2 && (
           <div className="text-center text-muted-foreground">
@@ -75,11 +108,11 @@ export default function SearchPage() {
           </div>
         )}
 
-        {indexLoaded && query.length >= 2 && !loading && results.length === 0 && (
+        {indexLoaded && !error && query.length >= 2 && !loading && results.length === 0 && (
           <div className="text-center text-muted-foreground">نتیجه‌ای یافت نشد</div>
         )}
 
-        {results.length > 0 && (
+        {results.length > 0 && !error && (
           <div className="space-y-6">
             <p className="text-sm text-muted-foreground">
               {results.length} نتیجه یافت شد
