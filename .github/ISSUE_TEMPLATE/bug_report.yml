@@ -1,0 +1,116 @@
+name: 🐛 گزارش باگ / Bug Report
+description: گزارش یک مشکل برای کمک به بهبود پروژه
+title: "[BUG]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        از اینکه وقت خود را برای گزارش این مشکل اختصاص داده‌اید متشکریم! 🙏
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 توضیحات
+      description: توضیح واضح و مختصری از مشکل بدهید
+      placeholder: مشکل چیست؟
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔄 مراحل بازتولید
+      description: مراحلی که منجر به بروز مشکل می‌شود
+      placeholder: |
+        1. برو به '...'
+        2. کلیک کن روی '...'
+        3. اسکرول کن به '...'
+        4. مشاهده خطا
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ رفتار مورد انتظار
+      description: توضیح دهید که چه چیزی باید اتفاق بیفتد
+      placeholder: چه چیزی باید اتفاق می‌افتاد؟
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ رفتار فعلی
+      description: توضیح دهید که چه اتفاقی می‌افتد
+      placeholder: چه چیزی در حال حاضر اتفاق می‌افتد؟
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 اسکرین‌شات‌ها
+      description: در صورت امکان اسکرین‌شات اضافه کنید
+      placeholder: تصاویر را اینجا بکشید و رها کنید
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 🌐 مرورگر
+      description: کدام مرورگر استفاده می‌کنید؟
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Opera
+        - سایر
+      multiple: true
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 📱 دستگاه
+      description: روی چه دستگاهی مشکل را مشاهده کردید؟
+      options:
+        - Desktop
+        - Mobile - iOS
+        - Mobile - Android
+        - Tablet - iOS
+        - Tablet - Android
+      multiple: true
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: 💻 سیستم عامل
+      description: کدام سیستم عامل؟
+      placeholder: e.g., Windows 11, macOS 14, Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 📋 اطلاعات اضافی
+      description: هر اطلاعات دیگری که فکر می‌کنید مفید است
+      placeholder: جزئیات بیشتر...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✔️ تأیید
+      description: قبل از ارسال این گزارش
+      options:
+        - label: من جستجو کردم و این مشکل قبلاً گزارش نشده است
+          required: true
+        - label: من آخرین نسخه را استفاده می‌کنم
+          required: true
