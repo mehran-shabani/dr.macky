@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import { defineDocumentType, makeSource } from 'contentlayer2/source-files'
 import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
@@ -46,7 +46,7 @@ export const Post = defineDocumentType(() => ({
         description: post.summary,
         datePublished: post.publishedAt,
         dateModified: post.updatedAt || post.publishedAt,
-        author: post.authors.map((author: string) => ({
+        author: (Array.isArray(post.authors) ? post.authors : post.authors ? [post.authors] : []).map((author: string) => ({
           '@type': 'Person',
           name: author,
         })),

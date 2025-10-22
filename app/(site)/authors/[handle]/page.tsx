@@ -8,9 +8,9 @@ import { MainNav } from '@/components/nav/main-nav'
 export const revalidate = 3600
 
 interface AuthorPageProps {
-  params: {
+  params: Promise<{
     handle: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -20,7 +20,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
-  const author = getAuthorByHandle(params.handle)
+  const { handle } = await params
+  const author = getAuthorByHandle(handle)
   if (!author) return {}
 
   return {
@@ -29,13 +30,14 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   }
 }
 
-export default function AuthorPage({ params }: AuthorPageProps) {
-  const author = getAuthorByHandle(params.handle)
+export default async function AuthorPage({ params }: AuthorPageProps) {
+  const { handle } = await params
+  const author = getAuthorByHandle(handle)
   if (!author) {
     notFound()
   }
 
-  const posts = getPostsByAuthor(params.handle)
+  const posts = getPostsByAuthor(handle)
 
   return (
     <div className="min-h-screen">

@@ -6,9 +6,9 @@ import { MainNav } from '@/components/nav/main-nav'
 export const revalidate = 3600
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     tag: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -19,13 +19,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+  const { tag } = await params
   return {
-    title: `برچسب: ${decodeURIComponent(params.tag)}`,
+    title: `برچسب: ${decodeURIComponent(tag)}`,
   }
 }
 
-export default function TagPage({ params }: TagPageProps) {
-  const tag = decodeURIComponent(params.tag)
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag: rawTag } = await params
+  const tag = decodeURIComponent(rawTag)
   const posts = getPostsByTag(tag)
 
   return (

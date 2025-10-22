@@ -8,9 +8,9 @@ import { MainNav } from '@/components/nav/main-nav'
 export const revalidate = 3600
 
 interface SubcategoryPageProps {
-  params: {
+  params: Promise<{
     subcategory: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -20,7 +20,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: SubcategoryPageProps): Promise<Metadata> {
-  const subcategoryInfo = getSubcategoryInfo(params.subcategory)
+  const { subcategory } = await params
+  const subcategoryInfo = getSubcategoryInfo(subcategory)
   if (!subcategoryInfo) return {}
 
   return {
@@ -28,13 +29,14 @@ export async function generateMetadata({ params }: SubcategoryPageProps): Promis
   }
 }
 
-export default function SubcategoryPage({ params }: SubcategoryPageProps) {
-  const subcategoryInfo = getSubcategoryInfo(params.subcategory)
+export default async function SubcategoryPage({ params }: SubcategoryPageProps) {
+  const { subcategory } = await params
+  const subcategoryInfo = getSubcategoryInfo(subcategory)
   if (!subcategoryInfo) {
     notFound()
   }
 
-  const posts = getPostsBySubcategory(params.subcategory)
+  const posts = getPostsBySubcategory(subcategory)
 
   return (
     <div className="min-h-screen">
