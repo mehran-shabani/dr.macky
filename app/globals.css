@@ -113,3 +113,304 @@
 .callout-error {
   @apply border-red-500 bg-red-50 dark:bg-red-950/20;
 }
+
+/* ===================================
+   Mobile-First & Touch Optimizations
+   =================================== */
+
+/* Smooth scrolling for mobile */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch manipulation for better mobile performance */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Improved touch targets (minimum 44px) */
+button,
+a,
+input,
+select,
+textarea {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Prevent pull-to-refresh on mobile when scrolling */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Safe area insets for notched devices (iPhone X+) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Mobile-optimized font sizes */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Improved image loading for mobile */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Native-like scrolling */
+.scroll-smooth {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y proximity;
+}
+
+/* Card hover effects for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .hover-card {
+    transition: transform 0.2s ease;
+  }
+  
+  .hover-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Gesture support */
+.swipeable {
+  touch-action: pan-y;
+  user-select: none;
+}
+
+/* Pull-to-refresh indicator space */
+.ptr-content {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Bottom navigation safe area */
+.bottom-nav {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Optimize for mobile browsers */
+@media (max-width: 768px) {
+  /* Reduce animations on mobile for performance */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Improve mobile menu */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--background);
+    overscroll-behavior: contain;
+  }
+  
+  /* Touch-friendly spacing */
+  .touch-spacing {
+    padding: 1rem;
+  }
+  
+  /* Mobile-optimized cards */
+  .mobile-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* PWA display mode detection */
+@media (display-mode: standalone) {
+  body {
+    /* Additional padding for standalone mode */
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Hide elements not needed in app mode */
+  .web-only {
+    display: none;
+  }
+}
+
+/* Orientation-specific styles */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Optimize for landscape mobile */
+  .landscape-optimize {
+    flex-direction: row;
+  }
+}
+
+/* High DPI screens optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS specific CSS */
+  input,
+  textarea {
+    font-size: 16px; /* Prevent zoom on focus */
+  }
+}
+
+/* Improved focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Touch feedback */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-feedback::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.touch-feedback:active::after {
+  opacity: 0.1;
+}
+
+/* Loading skeleton for better perceived performance */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    var(--accent) 50%,
+    var(--muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Sticky positioning with safe areas */
+.sticky-header {
+  position: sticky;
+  top: env(safe-area-inset-top, 0);
+  z-index: 40;
+  background: var(--background);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Optimized card grid for mobile */
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Share button for mobile */
+.share-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .share-button {
+    display: inline-flex;
+  }
+}
+
+/* Improved mobile navigation */
+.mobile-nav-item {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.mobile-nav-item:active {
+  background-color: var(--accent);
+}
+
+/* Bottom sheet for mobile */
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  padding-bottom: env(safe-area-inset-bottom);
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.bottom-sheet.open {
+  transform: translateY(0);
+}
+
+/* Haptic feedback class (works with JS) */
+.haptic {
+  cursor: pointer;
+}

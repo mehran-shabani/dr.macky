@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 پرسش و پاسخ / Q&A
+    url: https://github.com/yourusername/yourrepo/discussions
+    about: برای سؤالات عمومی و بحث‌ها
+  - name: 📚 مستندات
+    url: https://github.com/yourusername/yourrepo/wiki
+    about: راهنمای استفاده و مستندات پروژه
+  - name: 🆘 پشتیبانی
+    url: https://github.com/yourusername/yourrepo/discussions/categories/support
+    about: دریافت کمک از جامعه
