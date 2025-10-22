@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { allPosts } from 'contentlayer/generated'
-import { getPostBySlug, getRelatedPosts } from '@/lib/contentlayer'
+import { getPostBySlug, getRelatedPosts, getAuthorByHandle } from '@/lib/contentlayer'
 import { buildArticleMeta, generateArticleJsonLd } from '@/lib/seo'
 import { MainNav } from '@/components/nav/main-nav'
 import { Prose } from '@/components/mdx/prose'
@@ -88,17 +88,25 @@ export default async function PostPage({ params }: PostPageProps) {
           {post.authors && post.authors.length > 0 && (
             <div className="mt-4 flex items-center gap-2">
               <span className="text-sm text-muted-foreground">نویسنده:</span>
-              {post.authors.map((author, index) => (
-                <span key={author}>
-                  <Link
-                    href={`/authors/${author}`}
-                    className="text-sm font-medium hover:underline"
-                  >
-                    {author}
-                  </Link>
-                  {index < post.authors.length - 1 && <span className="mr-1">,</span>}
-                </span>
-              ))}
+              {post.authors.map((handle, index) => {
+                if (!handle) {
+                  return null
+                }
+
+                const author = getAuthorByHandle(handle)
+
+                return (
+                  <span key={handle}>
+                    <Link
+                      href={`/authors/${handle}`}
+                      className="text-sm font-medium hover:underline"
+                    >
+                      {author?.name ?? handle}
+                    </Link>
+                    {index < post.authors.length - 1 && <span className="mr-1">,</span>}
+                  </span>
+                )
+              })}
             </div>
           )}
 
